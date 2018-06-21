@@ -6,7 +6,8 @@ object Dependencies {
 
   // Udash
   val udashVersion = "0.6.1"
-  val udashJQueryVersion = "1.1.0"
+  val udashJQueryVersion = "1.1.1"
+
 
   // Backend
   val avsystemCommonsVersion = "1.25.6"
@@ -92,6 +93,8 @@ object Dependencies {
 
     // server logging backend
     "ch.qos.logback" % "logback-classic" % logbackVersion,
+
+    "org.scala-lang" % "scala-compiler" % "2.11.8",
   ))
 
   // Test dependencies

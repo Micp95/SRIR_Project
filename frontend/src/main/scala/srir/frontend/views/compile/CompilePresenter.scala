@@ -1,11 +1,11 @@
 package srir.frontend.views.compile
 
-import io.udash._
+import io.udash.Presenter
 import io.udash.auth.AuthRequires
 import io.udash.properties.model.ModelProperty
+import srir.frontend.ApplicationContext
 import srir.frontend.routing.CompileState
 import srir.frontend.services.UserContextService
-import srir.shared.model.SharedExceptions
 
 import scala.concurrent.ExecutionContext
 import scala.util._
@@ -21,22 +21,14 @@ class CompilePresenter(
 
   def sendFile(): Unit ={
 
-    //get file form jQuery content
-    //val msgProperty = model.subProp(_.data) //msgProperty.get should give content from input
 
+    ApplicationContext.restServer.compileMethod().sendFile("DUPA A NIE PLIK") onComplete{
 
-    //use rest to send file
+      case Success(xd) =>
 
-    //so far we are using implicit ec: ExecutionContext - we are needing section andThen in class
-    userService.login("dupa","dupa").map(_ => ()).andThen {
-      case Success(_) =>
-
-      case Failure(_: SharedExceptions.UserNotFound) =>
-
-      case Failure(_) =>
+      case Failure(ex) =>
 
     }
-
   }
 
   override def handleState(state: CompileState.type): Unit = {

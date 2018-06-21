@@ -1,5 +1,6 @@
 package srir.backend.server
 
+import io.udash.rest.server.{DefaultExposesREST, DefaultRestServlet}
 import srir.backend.rpc.ExposedRpcInterfaces
 import srir.backend.services.DomainServices
 import srir.shared.model.SharedExceptions
@@ -8,6 +9,8 @@ import io.udash.rpc._
 import org.eclipse.jetty.server.Server
 import org.eclipse.jetty.server.session.SessionHandler
 import org.eclipse.jetty.servlet.{DefaultServlet, ServletContextHandler, ServletHolder}
+import srir.backend.rest.ExposedRestInterfaces
+import srir.shared.rest.MainServerREST
 
 import scala.concurrent.ExecutionContext.Implicits.global
 
@@ -22,6 +25,14 @@ class ApplicationServer(val port: Int, resourceBase: String, domainServices: Dom
   contextHandler.addServlet(atmosphereHolder, "/atm/*")
   contextHandler.addServlet(appHolder, "/*")
   server.setHandler(contextHandler)
+
+
+  private val restHolder = new ServletHolder(
+    new DefaultRestServlet(new DefaultExposesREST[MainServerREST](new ExposedRestInterfaces)))
+  restHolder.setAsyncSupported(true)
+
+  contextHandler.addServlet(restHolder, "/api/*")
+
 
   def start(): Unit = server.start()
   def stop(): Unit = server.stop()
