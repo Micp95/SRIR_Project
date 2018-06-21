@@ -3,7 +3,6 @@ package srir.frontend.views.chat
 import java.util.Date
 
 import srir.frontend.routing.ChatState
-import srir.frontend.services.UserContextService
 import srir.frontend.services.rpc.NotificationsCenter
 import srir.shared.model.auth.{Permission, UserContext, UserToken}
 import srir.shared.model.chat.ChatMessage

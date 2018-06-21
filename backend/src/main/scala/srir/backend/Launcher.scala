@@ -3,7 +3,6 @@ package srir.backend
 import java.util.concurrent.TimeUnit
 
 import io.udash.logging.CrossLogging
-//import srir.backend.compile.{CodeLoader, ExternalProcess}
 import srir.backend.server.ApplicationServer
 import srir.backend.spring.SpringContext
 
@@ -18,7 +17,7 @@ object Launcher extends CrossLogging {
     new ExternalProcess {
       override def run() =10
     }
-
+ApplicationServer
     val str =
       """new ExternalProcess {
          |  override def run() = 10

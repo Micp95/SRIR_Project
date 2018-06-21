@@ -1,11 +1,7 @@
 package srir.backend.server
 
 import io.udash.rest.server.{DefaultExposesREST, DefaultRestServlet}
-import srir.backend.rpc.ExposedRpcInterfaces
 import srir.backend.services.DomainServices
-import srir.shared.model.SharedExceptions
-import srir.shared.rpc.server.MainServerRPC
-import io.udash.rpc._
 import org.eclipse.jetty.server.Server
 import org.eclipse.jetty.server.session.SessionHandler
 import org.eclipse.jetty.servlet.{DefaultServlet, ServletContextHandler, ServletHolder}
@@ -18,11 +14,9 @@ class ApplicationServer(val port: Int, resourceBase: String, domainServices: Dom
   private val server = new Server(1234)
   private val contextHandler = new ServletContextHandler
   private val appHolder = createAppHolder()
-  private val atmosphereHolder = createAtmosphereHolder()
 
   contextHandler.setSessionHandler(new SessionHandler)
   contextHandler.getSessionHandler.addEventListener(new org.atmosphere.cpr.SessionSupport())
-  contextHandler.addServlet(atmosphereHolder, "/atm/*")
   contextHandler.addServlet(appHolder, "/*")
   server.setHandler(contextHandler)
 
@@ -34,31 +28,11 @@ class ApplicationServer(val port: Int, resourceBase: String, domainServices: Dom
   contextHandler.addServlet(restHolder, "/api/*")
 
 
+
   def start(): Unit = server.start()
   def stop(): Unit = server.stop()
 
-  private def createAtmosphereHolder() = {
-    val config = new DefaultAtmosphereServiceConfig((clientId) =>
-      // interfaces are cached per user connection
-      new DefaultExposesServerRPC[MainServerRPC](
-        new ExposedRpcInterfaces()(domainServices, clientId)
-      )
-    )
 
-    // notify ClientsService about new or closed connections
-    config.onNewConnection { case id => domainServices.rpcClientsService.registerConnection(id) }
-    config.onClosedConnection { case id => domainServices.rpcClientsService.unregisterConnection(id) }
-
-    val framework = new DefaultAtmosphereFramework(
-      config,
-      // this is registry with custom exceptions support
-      exceptionsRegistry = new SharedExceptions
-    )
-
-    val atmosphereHolder = new ServletHolder(new RpcServlet(framework))
-    atmosphereHolder.setAsyncSupported(true)
-    atmosphereHolder
-  }
 
   private def createAppHolder() = {
     val appHolder = new ServletHolder(new DefaultServlet)

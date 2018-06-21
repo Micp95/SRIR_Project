@@ -1,7 +1,6 @@
 package srir.frontend.views.compile
 
 
-import srir.frontend.services.TranslationsService
 
 //import srir.shared.i18n.Translations
 import io.udash.bootstrap.UdashBootstrap.ComponentId
@@ -13,7 +12,10 @@ import io.udash.css._
 import io.udash.{ModelProperty, _}
 //import io.udash.i18n._
 
-class CompileView(model: ModelProperty[CompileModel], presenter: CompilePresenter, translationsService: TranslationsService)
+class CompileView(
+                    model: ModelProperty[CompileModel],
+                    presenter: CompilePresenter
+                 )
   extends FinalView with CssView {
 
 

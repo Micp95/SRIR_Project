@@ -13,6 +13,4 @@ sealed abstract class FinalRoutingState(parentState: Option[ContainerRoutingStat
   extends RoutingState(parentState) with FinalState
 
 case object RootState extends ContainerRoutingState(None)
-case object LoginPageState extends FinalRoutingState(Some(RootState))
-case object ChatState extends ContainerRoutingState(Some(RootState))
 case object CompileState extends ContainerRoutingState(None)

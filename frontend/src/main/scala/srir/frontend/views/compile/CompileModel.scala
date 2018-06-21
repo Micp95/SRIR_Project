@@ -1,6 +1,6 @@
 package srir.frontend.views.compile
 
-import io.udash._
+import io.udash.HasModelPropertyCreator
 import srir.shared.model.compile.CompileInformation
 
 

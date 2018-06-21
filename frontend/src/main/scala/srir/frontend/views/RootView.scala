@@ -1,35 +1,18 @@
 package srir.frontend.views
 
-import srir.frontend.routing.RootState
-import srir.frontend.services.TranslationsService
-import srir.shared.css.GlobalStyles
-import srir.shared.i18n.Translations
-import io.udash._
-import io.udash.bootstrap.UdashBootstrap.ComponentId
-import io.udash.bootstrap.button.{ButtonStyle, UdashButton}
+import io.udash.{StaticViewFactory, _}
 import io.udash.bootstrap.{BootstrapStyles, UdashBootstrap}
 import io.udash.css.CssView
-import io.udash.i18n.Lang
+import srir.frontend.routing.RootState
+import srir.shared.css.GlobalStyles
 
-class RootViewFactory(translationsService: TranslationsService) extends StaticViewFactory[RootState.type](
-  () => new RootView(translationsService)
+class RootViewFactory() extends StaticViewFactory[RootState.type](
+  () => new RootView()
 )
 
-class RootView(translationsService: TranslationsService) extends ContainerView with CssView {
+class RootView() extends ContainerView with CssView {
   import scalatags.JsDom.all._
 
-  private def langChangeButton(lang: Lang): Modifier  = {
-    val btn = UdashButton(
-      buttonStyle = ButtonStyle.Link, componentId = ComponentId(s"lang-btn-${lang.lang}")
-    )(lang.lang.toUpperCase())
-
-    btn.listen {
-      case UdashButton.ButtonClickEvent(_, _) =>
-        translationsService.setLanguage(lang)
-    }
-
-    btn.render
-  }
 
   // ContainerView contains default implementation of child view rendering
   // It puts child view into `childViewContainer`
@@ -40,8 +23,7 @@ class RootView(translationsService: TranslationsService) extends ContainerView w
 
     BootstrapStyles.container,
     div(
-      GlobalStyles.floatRight,
-      Translations.langs.map(v => langChangeButton(Lang(v)))
+      GlobalStyles.floatRight
     ),
     h1("CompileProject"),
     childViewContainer

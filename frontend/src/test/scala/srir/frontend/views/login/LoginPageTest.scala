@@ -1,7 +1,6 @@
 package srir.frontend.views.login
 
 import srir.frontend.routing.{ChatState, LoginPageState, RoutingState}
-import srir.frontend.services.UserContextService
 import srir.shared.i18n.Translations
 import srir.shared.model.auth.{UserContext, UserToken}
 import srir.shared.model.SharedExceptions
