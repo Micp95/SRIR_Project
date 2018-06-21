@@ -8,6 +8,10 @@ import srir.shared.rpc.client.MainClientRPC
 import srir.shared.rpc.server.MainServerRPC
 import io.udash._
 import io.udash.rpc._
+import org.scalajs.dom
+import srir.shared.rest.MainServerREST
+
+import scala.util.Try
 
 object ApplicationContext {
   import scala.concurrent.ExecutionContext.Implicits.global
@@ -34,4 +38,12 @@ object ApplicationContext {
 
   val translationsService: TranslationsService = new TranslationsService(serverRpc.translations())
   val userService: UserContextService = new UserContextService(serverRpc)
+
+  import io.udash.rest._
+  val restServer: MainServerREST = DefaultServerREST[MainServerREST](
+    Protocol.Http, dom.window.location.hostname, Try(dom.window.location.port.toInt).getOrElse(80), "/api/"
+  )
+
+
+
 }
