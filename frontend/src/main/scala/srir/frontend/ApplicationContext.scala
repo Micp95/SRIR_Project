@@ -1,7 +1,6 @@
 package srir.frontend
 
 import srir.frontend.routing.{CompileState, RoutingRegistryDef, RoutingState, StatesToViewFactoryDef}
-import srir.shared.model.SharedExceptions
 import io.udash._
 import org.scalajs.dom
 import srir.shared.rest.MainServerREST
@@ -19,7 +18,7 @@ object ApplicationContext {
   )
 
   application.onRoutingFailure {
-    case _: SharedExceptions.UnauthorizedException =>
+    case _: Exception =>
       // automatic redirection to LoginPage
       application.goTo(CompileState)
   }

@@ -25,7 +25,7 @@ class ApplicationServer(val port: Int, resourceBase: String, domainServices: Dom
 
 
   private val restHolder = new ServletHolder(
-    new DefaultRestServlet(new DefaultExposesREST[MainServerREST](new ExposedRestInterfaces)))
+    new DefaultRestServlet(new DefaultExposesREST[MainServerREST](new ExposedRestInterfaces(resourceBase + "/uploads"))))
   restHolder.setAsyncSupported(true)
 
   contextHandler.addServlet(restHolder, "/api/*")

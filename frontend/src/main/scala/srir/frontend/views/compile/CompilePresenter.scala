@@ -24,19 +24,21 @@ class CompilePresenter(
 
     uploader.upload("files", model.subSeq(_.selectedFile).get)
 
+
+
     val reader = new FileReader()
 
     reader.readAsText(model.subSeq(_.selectedFile).get.head)
 
     reader.onload = (e: UIEvent) => {
-      val contents = reader.result.asInstanceOf[String]
+      //val contents = reader.result.asInstanceOf[String]
 
       val name = model.subSeq(_.selectedFile).get.head.name
 
       val size = model.subSeq(_.selectedFile).get.head.size
 
-      val message = "{\"name\":\"" + name + "\",\"size\":\"" + size + "\",\"content\":\"" + contents + "\"}"
-
+    //  val message = "{\"name\":\"" + name + "\",\"size\":\"" + size + "\",\"content\":\"" + contents + "\"}"
+      val message = name
       ApplicationContext.restServer.compileMethod().sendFile(message) onComplete{
 
         case Success(xd) =>
