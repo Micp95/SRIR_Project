@@ -57,7 +57,14 @@ class CompileView(
 
   override def getTemplate: Modifier = div(
     UdashPanel(componentId = ComponentId("chat-panel"))(
+      UdashPanel.body(
+        UdashForm.fileInput()("Select files")("files",
+          acceptMultipleFiles = Property(false),
+          selectedFiles = model.subSeq(_.selectedFile)
+        )
+      ),
       UdashPanel.footer(msgForm)
     ).render
+
   )
 }

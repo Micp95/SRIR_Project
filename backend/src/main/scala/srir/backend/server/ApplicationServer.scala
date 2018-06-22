@@ -1,11 +1,14 @@
 package srir.backend.server
 
 import io.udash.rest.server.{DefaultExposesREST, DefaultRestServlet}
+import javax.servlet.MultipartConfigElement
 import srir.backend.services.DomainServices
 import org.eclipse.jetty.server.Server
 import org.eclipse.jetty.server.session.SessionHandler
 import org.eclipse.jetty.servlet.{DefaultServlet, ServletContextHandler, ServletHolder}
+import srir.backend.compile.DemoFileUploadServlet
 import srir.backend.rest.ExposedRestInterfaces
+import srir.shared.ApplicationServerContexts
 import srir.shared.rest.MainServerREST
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -27,6 +30,13 @@ class ApplicationServer(val port: Int, resourceBase: String, domainServices: Dom
 
   contextHandler.addServlet(restHolder, "/api/*")
 
+  private val uploadsHolder = {
+    val holder = new ServletHolder(new DemoFileUploadServlet(resourceBase + "/uploads"))
+    holder.getRegistration.setMultipartConfig(new MultipartConfigElement(""))
+    holder
+  }
+
+  contextHandler.addServlet(uploadsHolder, ApplicationServerContexts.uploadContextPrefix + "/*")
 
 
   def start(): Unit = server.start()

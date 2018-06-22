@@ -1,11 +1,13 @@
 package srir.frontend.views.compile
 
 
-import io.udash.Presenter
+import io.udash._
 import io.udash.auth.AuthRequires
 import io.udash.properties.model.ModelProperty
+import org.scalajs.dom._
 import srir.frontend.ApplicationContext
 import srir.frontend.routing.CompileState
+import srir.shared.ApplicationServerContexts
 
 import scala.concurrent.ExecutionContext
 import scala.util._
@@ -16,16 +18,37 @@ class CompilePresenter(
                     implicit ec: ExecutionContext
                    ) extends Presenter[CompileState.type] with AuthRequires {
 
+  private val uploader = new FileUploader(Url(ApplicationServerContexts.uploadContextPrefix))
+
   def sendFile(): Unit ={
 
+    uploader.upload("files", model.subSeq(_.selectedFile).get)
 
-    ApplicationContext.restServer.compileMethod().sendFile("DUPA A NIE PLIK") onComplete{
+    val reader = new FileReader()
 
-      case Success(xd) =>
+    reader.readAsText(model.subSeq(_.selectedFile).get.head)
 
-      case Failure(ex) =>
+    reader.onload = (e: UIEvent) => {
+      val contents = reader.result.asInstanceOf[String]
+
+      val name = model.subSeq(_.selectedFile).get.head.name
+
+      val size = model.subSeq(_.selectedFile).get.head.size
+
+      val message = "{\"name\":\"" + name + "\",\"size\":\"" + size + "\",\"content\":\"" + contents + "\"}"
+
+      ApplicationContext.restServer.compileMethod().sendFile(message) onComplete{
+
+        case Success(xd) =>
+
+        case Failure(ex) =>
+
+      }
 
     }
+
+
+
   }
 
   override def handleState(state: CompileState.type): Unit = {

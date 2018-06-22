@@ -18,7 +18,7 @@ class CompileViewFactory(
   override def create(): (View, Presenter[CompileState.type]) = {
     // Main model of the view
     val model = ModelProperty[CompileModel](
-      CompileModel(new CompileInformation("","",""),"")
+      CompileModel(new CompileInformation("","",""),"", Seq.empty, Seq.empty)
     )
 
 
