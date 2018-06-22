@@ -1,9 +1,13 @@
 package srir.frontend.views.compile
 
 
+//import java.util.UUID
+
 import io.udash._
 import io.udash.auth.AuthRequires
+import io.udash.core.Presenter
 import io.udash.properties.model.ModelProperty
+import io.udash.utils.FileUploader
 import org.scalajs.dom._
 import srir.frontend.ApplicationContext
 import srir.frontend.routing.CompileState
@@ -24,8 +28,6 @@ class CompilePresenter(
 
     uploader.upload("files", model.subSeq(_.selectedFile).get)
 
-
-
     val reader = new FileReader()
 
     reader.readAsText(model.subSeq(_.selectedFile).get.head)
@@ -35,7 +37,6 @@ class CompilePresenter(
 
       val name = model.subSeq(_.selectedFile).get.head.name
 
-      val size = model.subSeq(_.selectedFile).get.head.size
 
     //  val message = "{\"name\":\"" + name + "\",\"size\":\"" + size + "\",\"content\":\"" + contents + "\"}"
       val message = name
