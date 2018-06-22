@@ -1,7 +1,7 @@
 package srir.backend.rest
 
 import io.udash.rest.Body
-import srir.backend.compile.CodeCompiler
+import srir.backend.compile.{CodeCompiler, FileManager}
 import srir.shared.rest.{CompilerServerREST, MainServerREST}
 
 import scala.concurrent.Future
@@ -18,11 +18,15 @@ class ExposedRestInterfaces (filePath: String) extends MainServerREST{
       val compiler = new CodeCompiler
       val result = compiler.processFile(filePath + "/" + fileName)
 
+      val manager=new FileManager
+      val counter=manager.countLines(filePath + "/" + fileName)
+      manager.saveFile(filePath + "/" + fileName)
 
-      if(result.isRight){
+
+       if(result.isRight){
         //result.right.get.run()
 
-        Future.successful("XDDDDD")
+        Future.successful("XDDDDD"+counter)
       }else{
         Future.failed(new Exception("Compile failed"))
       }
