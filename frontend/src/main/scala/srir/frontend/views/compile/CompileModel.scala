@@ -5,7 +5,7 @@ import org.scalajs.dom.File
 import srir.shared.UploadedFile
 
 
-case class CompileModel(data: String, selectedFile: Seq[File], uploadedFile: Seq[UploadedFile])
+case class CompileModel(data: String,fileName: String, selectedFile: Seq[File], uploadedFile: Seq[UploadedFile])
 
 object CompileModel extends HasModelPropertyCreator[CompileModel]
 

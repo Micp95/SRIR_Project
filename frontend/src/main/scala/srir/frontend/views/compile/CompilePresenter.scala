@@ -25,7 +25,6 @@ class CompilePresenter(
   private val uploader = new FileUploader(Url(ApplicationServerContexts.uploadContextPrefix))
 
 
-
   def processFile():Unit={
     uploader.upload("files", model.subSeq(_.selectedFile).get)
 
@@ -39,8 +38,8 @@ class CompilePresenter(
       ApplicationContext.restServer.compileMethod().compileFile(name) onComplete{
 
         case Success(resp) =>{
+          model.subProp(_.fileName).set(resp)
           executeFile()
-
         }
 
         case Failure(ex) =>{
@@ -54,7 +53,7 @@ class CompilePresenter(
 
 
   private def executeFile():Unit ={
-    val name = model.subSeq(_.selectedFile).get.head.name
+    val name = model.subProp(_.fileName).get
 
     ApplicationContext.restServer.compileMethod().executeFile(name) onComplete{
 
@@ -72,7 +71,7 @@ class CompilePresenter(
   }
 
   private def getStats():Unit ={
-    val name = model.subSeq(_.selectedFile).get.head.name
+    val name = model.subProp(_.fileName).get
 
     ApplicationContext.restServer.compileMethod().getStatsForFile(name) onComplete{
 
