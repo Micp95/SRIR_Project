@@ -14,9 +14,7 @@ class ExposedRestInterfaces (filePath: String) extends MainServerREST{
   override def compileMethod(): CompilerServerREST = new CompilerServerREST{
 
 
-    override def sendFile(@Body arg: String):Future[String] ={
-
-      val fileName = arg
+    override def compileFile(@Body fileName: String):Future[String] ={
 
       val compiler = new CodeCompiler
       val result = compiler.processFile(filePath + "/" + fileName)
@@ -25,7 +23,7 @@ class ExposedRestInterfaces (filePath: String) extends MainServerREST{
 
       if(result.isRight){
         FilesStorage.add(
-          UploadedFile(fileName, result.right.get,0 )
+          UploadedFile(fileName, result.right.get)
         )
         Future.successful("OK")
       }else{
@@ -48,6 +46,12 @@ class ExposedRestInterfaces (filePath: String) extends MainServerREST{
         case ex: Exception =>
           Future.failed(new Exception("Execution failed: "+ex.getMessage))
       }
+    }
+
+    override def getStatsForFile(@Body fileName: String): Future[Array[Int]] = {
+
+
+      Future.successful(Array(0,0,0))
     }
   }
 

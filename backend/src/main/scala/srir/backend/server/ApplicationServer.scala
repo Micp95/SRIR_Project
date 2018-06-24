@@ -5,8 +5,7 @@ import javax.servlet.MultipartConfigElement
 import org.eclipse.jetty.server.Server
 import org.eclipse.jetty.server.session.SessionHandler
 import org.eclipse.jetty.servlet.{DefaultServlet, ServletContextHandler, ServletHolder}
-import srir.backend.rest.ExposedRestInterfaces
-import srir.backend.stats.DemoFileUploadServlet
+import srir.backend.rest.{DemoFileUploadServlet, ExposedRestInterfaces}
 import srir.shared.ApplicationServerContexts
 import srir.shared.rest.MainServerREST
 

@@ -937,3 +937,16 @@
 13:34:45.441 [run-main-1] INFO  o.e.jetty.server.AbstractConnector - Stopped ServerConnector@3b9fa35b{HTTP/1.1,[http/1.1]}{0.0.0.0:8080}
 13:34:45.442 [run-main-1] INFO  org.eclipse.jetty.server.session - Stopped scavenging
 13:34:45.444 [run-main-1] INFO  o.e.j.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@641839cb{/,null,UNAVAILABLE}
+14:09:40.019 [run-main-1] INFO  org.eclipse.jetty.util.log - Logging initialized @32746ms to org.eclipse.jetty.util.log.Slf4jLog
+14:09:40.292 [run-main-1] INFO  org.eclipse.jetty.server.Server - jetty-9.4.8.v20171121, build timestamp: 2017-11-21T22:27:37+01:00, git hash: 82b8fb23f757335bb3329d540ce37a2a2615f0a8
+14:09:41.108 [run-main-1] INFO  org.eclipse.jetty.server.session - DefaultSessionIdManager workerName=node0
+14:09:41.109 [run-main-1] INFO  org.eclipse.jetty.server.session - No SessionScavenger set, using defaults
+14:09:41.115 [run-main-1] INFO  org.eclipse.jetty.server.session - Scavenging every 660000ms
+14:09:41.155 [run-main-1] INFO  o.e.j.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@799c4f8c{/,null,AVAILABLE}
+14:09:41.228 [run-main-1] INFO  o.e.jetty.server.AbstractConnector - Started ServerConnector@213f2353{HTTP/1.1,[http/1.1]}{0.0.0.0:8080}
+14:09:41.229 [run-main-1] INFO  org.eclipse.jetty.server.Server - Started @33959ms
+14:09:41.232 [run-main-1] INFO  io.udash.logging.UdashLogger - Application started in 1s.
+14:09:41.233 [run-main-1] INFO  io.udash.logging.UdashLogger - Click `Enter` to close application...
+14:12:30.446 [run-main-1] INFO  o.e.jetty.server.AbstractConnector - Stopped ServerConnector@213f2353{HTTP/1.1,[http/1.1]}{0.0.0.0:8080}
+14:12:30.447 [run-main-1] INFO  org.eclipse.jetty.server.session - Stopped scavenging
+14:12:30.449 [run-main-1] INFO  o.e.j.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@799c4f8c{/,null,UNAVAILABLE}

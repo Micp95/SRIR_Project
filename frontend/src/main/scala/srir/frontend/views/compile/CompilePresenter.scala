@@ -36,19 +36,21 @@ class CompilePresenter(
     reader.onload = (e: UIEvent) => {
 
       val name = model.subSeq(_.selectedFile).get.head.name
-      ApplicationContext.restServer.compileMethod().sendFile(name) onComplete{
+      ApplicationContext.restServer.compileMethod().compileFile(name) onComplete{
 
-        case Success(xd) =>{
+        case Success(resp) =>{
           executeFile()
 
         }
 
-        case Failure(ex) =>
+        case Failure(ex) =>{
+
+
+        }
 
       }
     }
   }
-
 
 
   private def executeFile():Unit ={
@@ -56,13 +58,34 @@ class CompilePresenter(
 
     ApplicationContext.restServer.compileMethod().executeFile(name) onComplete{
 
-      case Success(xd) =>
+      case Success(resp) =>{
+        getStats()
 
-      case Failure(ex) =>
+      }
+
+      case Failure(ex) =>{
+
+
+      }
 
     }
   }
 
+  private def getStats():Unit ={
+    val name = model.subSeq(_.selectedFile).get.head.name
+
+    ApplicationContext.restServer.compileMethod().getStatsForFile(name) onComplete{
+
+      case Success(resp) =>{
+
+      }
+
+      case Failure(ex) =>{
+
+      }
+
+    }
+  }
 
   override def handleState(state: CompileState.type): Unit = {
 
