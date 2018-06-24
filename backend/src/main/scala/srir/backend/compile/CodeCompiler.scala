@@ -2,6 +2,7 @@ package srir.backend.compile
 
 import java.io.File
 
+import srir.shared.model.compile.ExternalProcess
 import srir.shared.rest.CompileStatus._
 
 import scala.io.Source
@@ -24,11 +25,15 @@ class CodeCompiler{
         return Left(MissRun)
 
       val compiledFile = CodeLoader(fileContents)
+
+      if(compiledFile.compiledCode == null )
+        return Left(FailedCompilation)
+
       val result = compiledFile.getFileReference
 
       Right(result)
     }catch {
-      case ex: Exception => Left(FailedCompilation)
+      case ex: Exception => Left(CastFailed)
     }
 
   }

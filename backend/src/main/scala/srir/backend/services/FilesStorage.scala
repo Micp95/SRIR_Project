@@ -5,11 +5,15 @@ import srir.shared.UploadedFile
 import scala.collection.mutable
 
 object FilesStorage {
-  private val files: mutable.ArrayBuffer[UploadedFile] = mutable.ArrayBuffer.empty
+  private val files: mutable.AnyRefMap[String,UploadedFile] = mutable.AnyRefMap.empty
 
   def add(file: UploadedFile): Unit =
-    files.append(file)
+    files.+=(file.fileName,file)
 
-  def allFiles: Seq[UploadedFile] =
-    files
+  def allFiles: List[UploadedFile] =
+    files.valuesIterator.toList
+
+  def getFile (fileName:String): UploadedFile=
+    files(fileName)
+
 }

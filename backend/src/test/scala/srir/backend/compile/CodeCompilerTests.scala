@@ -35,7 +35,7 @@ class CodeCompilerTests extends FlatSpec with Matchers{
 
   it should "not be able to process file when there is without run method" in {
     val fileContent =
-      """new ExternalProcesss {
+      """new ExternalProcess {
         |  override def xddd() = add(10,20)
         |   def divide(a:Int,b:Int) = a + b
         |}
@@ -50,7 +50,7 @@ class CodeCompilerTests extends FlatSpec with Matchers{
 
   it should "not be able to process file when error in code" in {
     val fileContent =
-      """new ExternalProcesss
+      """new ExternalProcess
         |  override def run() = add(10,20)
         |   def divide(a:Int,b:Int) = a + b
         |
@@ -66,9 +66,9 @@ class CodeCompilerTests extends FlatSpec with Matchers{
 
   it should "be able to process file if code is correct" in {
     val fileContent =
-      """new ExternalProcesss {
+      """new ExternalProcess {
         |  override def run() = add(10,20)
-        |   def divide(a:Int,b:Int) = a + b
+        |   def add(a:Int,b:Int) = a + b
         |}
       """.stripMargin
 
@@ -76,6 +76,11 @@ class CodeCompilerTests extends FlatSpec with Matchers{
     Files.write(Paths.get(filePath), fileContent.getBytes(StandardCharsets.UTF_8))
     val result = compiler.processFile(filePath)
     new File(filePath).delete()
-    result.isRight
+
+    result.isRight.shouldBe(true)
+
+    val runResult = result.right.get.run()
+    runResult.shouldBe(30)
+
   }
 }

@@ -1,7 +1,10 @@
 package srir.backend.rest
 
 import io.udash.rest.Body
-import srir.backend.compile.{CodeCompiler, FileManager}
+import srir.backend.compile.CodeCompiler
+import srir.backend.services.FilesStorage
+import srir.backend.stats.FileManager
+import srir.shared.UploadedFile
 import srir.shared.rest.{CompilerServerREST, MainServerREST}
 
 import scala.concurrent.Future
@@ -18,23 +21,34 @@ class ExposedRestInterfaces (filePath: String) extends MainServerREST{
       val compiler = new CodeCompiler
       val result = compiler.processFile(filePath + "/" + fileName)
 
-      val manager=new FileManager
-      val counter=manager.countLines(filePath + "/" + fileName)
-      manager.saveFile(filePath + "/" + fileName)
 
 
-       if(result.isRight){
-        //result.right.get.run()
-
-        Future.successful("XDDDDD"+counter)
+      if(result.isRight){
+        FilesStorage.add(
+          UploadedFile(fileName, result.right.get,0 )
+        )
+        Future.successful("OK")
       }else{
-        Future.failed(new Exception("Compile failed"))
+        Future.failed(new Exception("Compile failed:"+result.left.get.toString))
       }
     }
 
-    override def executeFile(@Body fileKey: String):Future[String]=
-      Future.successful("XD")
+    override def executeFile(@Body fileName: String):Future[String]={
+      val file = FilesStorage.getFile(fileName)
 
+      try {
+        val result = file.compiledApplication.run()
+
+        val manager=new FileManager
+        val counter=manager.countLines(filePath + "/" + fileName)
+        manager.saveFile(filePath + "/" + fileName)
+
+        Future.successful(result.toString + ":" + counter)
+      }catch {
+        case ex: Exception =>
+          Future.failed(new Exception("Execution failed: "+ex.getMessage))
+      }
+    }
   }
 
 }

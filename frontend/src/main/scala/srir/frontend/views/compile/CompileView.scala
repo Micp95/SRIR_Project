@@ -35,10 +35,11 @@ class CompileView(
   )(span(FontAwesome.send), tpe := "submit")
 
 
+
   private val msgForm = div(
     UdashForm(
       _ => {
-        presenter.sendFile()
+        presenter.processFile()
         true // prevent default callback call
       }
     )(

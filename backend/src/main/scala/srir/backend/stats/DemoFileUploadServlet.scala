@@ -1,4 +1,4 @@
-package srir.backend.compile
+package srir.backend.stats
 
 import java.io.{File, InputStream}
 import java.nio.file.Files

@@ -1,20 +1,15 @@
 package srir.backend.compile
 
-
-
-
-
+import srir.shared.model.compile.ExternalProcess
 import scala.reflect.runtime.{currentMirror, universe}
 import scala.tools.reflect.ToolBox
-
-
 
 case class CodeLoader (fileString:String){
 
 
-  val fileContents: String = fileString
-  val toolbox: ToolBox[universe.type] = currentMirror.mkToolBox()
-  var tree: toolbox.u.Tree = toolbox.parse(s"import srir.backend.compile._;$fileContents")
+  private val fileContents: String = fileString
+  private val toolbox: ToolBox[universe.type] = currentMirror.mkToolBox()
+  private val tree: toolbox.u.Tree = toolbox.parse(s"import srir.backend.compile._;import srir.shared.model.compile._;  $fileContents")
   var compiledCode: () => Any = _
 
   try{

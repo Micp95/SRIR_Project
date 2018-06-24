@@ -1,10 +1,5 @@
 package srir.shared
 
-import com.avsystem.commons.serialization.HasGenCodec
-import io.udash.properties.ModelPropertyCreator
+import srir.shared.model.compile.ExternalProcess
 
-case class UploadedFile(name: String, serverFileName: String, size: Long)
-object UploadedFile extends HasGenCodec[UploadedFile] {
-  implicit val mpc: ModelPropertyCreator[UploadedFile] = ModelPropertyCreator.materialize
-}
-
+case class UploadedFile(fileName: String, compiledApplication: ExternalProcess, stats: Long)

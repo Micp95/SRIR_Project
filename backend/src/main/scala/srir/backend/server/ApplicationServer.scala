@@ -6,8 +6,8 @@ import srir.backend.services.DomainServices
 import org.eclipse.jetty.server.Server
 import org.eclipse.jetty.server.session.SessionHandler
 import org.eclipse.jetty.servlet.{DefaultServlet, ServletContextHandler, ServletHolder}
-import srir.backend.compile.DemoFileUploadServlet
 import srir.backend.rest.ExposedRestInterfaces
+import srir.backend.stats.DemoFileUploadServlet
 import srir.shared.ApplicationServerContexts
 import srir.shared.rest.MainServerREST
 

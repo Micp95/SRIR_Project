@@ -1,8 +1,8 @@
-package srir.backend.compile
+package srir.backend.stats
+
+import java.io.{File, PrintWriter}
 
 import scala.io.Source
-import java.io.File
-import java.io.PrintWriter
 
 class FileManager {
   var fileCounter :Int = 0

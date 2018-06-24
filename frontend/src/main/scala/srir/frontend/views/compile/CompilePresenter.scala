@@ -24,8 +24,9 @@ class CompilePresenter(
 
   private val uploader = new FileUploader(Url(ApplicationServerContexts.uploadContextPrefix))
 
-  def sendFile(): Unit ={
 
+
+  def processFile():Unit={
     uploader.upload("files", model.subSeq(_.selectedFile).get)
 
     val reader = new FileReader()
@@ -33,26 +34,35 @@ class CompilePresenter(
     reader.readAsText(model.subSeq(_.selectedFile).get.head)
 
     reader.onload = (e: UIEvent) => {
-      //val contents = reader.result.asInstanceOf[String]
 
       val name = model.subSeq(_.selectedFile).get.head.name
+      ApplicationContext.restServer.compileMethod().sendFile(name) onComplete{
 
+        case Success(xd) =>{
+          executeFile()
 
-    //  val message = "{\"name\":\"" + name + "\",\"size\":\"" + size + "\",\"content\":\"" + contents + "\"}"
-      val message = name
-      ApplicationContext.restServer.compileMethod().sendFile(message) onComplete{
-
-        case Success(xd) =>
+        }
 
         case Failure(ex) =>
 
       }
+    }
+  }
+
+
+
+  private def executeFile():Unit ={
+    val name = model.subSeq(_.selectedFile).get.head.name
+
+    ApplicationContext.restServer.compileMethod().executeFile(name) onComplete{
+
+      case Success(xd) =>
+
+      case Failure(ex) =>
 
     }
-
-
-
   }
+
 
   override def handleState(state: CompileState.type): Unit = {
 
