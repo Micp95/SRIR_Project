@@ -19,7 +19,7 @@ object ApplicationContext {
 
   application.onRoutingFailure {
     case _: Exception =>
-      // automatic redirection to LoginPage
+      // automatic redirection to Main Page
       application.goTo(CompileState)
   }
 
