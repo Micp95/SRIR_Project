@@ -5,19 +5,27 @@ import java.io.{File, PrintWriter}
 import scala.io.Source
 
 class FileManager {
-  var fileCounter :Int = 0
+
   val pathName :String = "file"
-  val fileExtension=".txt"
+  val fileExtension=""
+  var filesNames = Array[String]()
 
-
-
+  def addOneToCounter()={
+    FileManager.fileCounter=FileManager.addcounter()
+  }
   def countLines(file: String): Int ={
+    if (!new File(file).exists()){
+      return 0
+    }
     val src = Source.fromFile(file)
     val count = src.getLines.size
     println(count)
     return count
   }
   def countWords(file: String): Int = {
+    if (!new File(file).exists()){
+      return 0
+    }
     val src = Source.fromFile(file)
     val count =
       (for {
@@ -30,6 +38,9 @@ class FileManager {
     return count
   }
   def countChars(file: String): Int={
+    if (!new File(file).exists()){
+      return 0
+    }
     val src = Source.fromFile(file)
     val count =
       (for {
@@ -41,41 +52,53 @@ class FileManager {
     println(count)
     return count
   }
-  def saveFile(file: String):String ={
+  def saveFile(filepath: String, name:String):String ={
     //val rx = """(?m)\s*^(\++|-+)$\s*"""
     //val filelines = text.split(rx)
-    val fileLines=Source.fromFile(file).getLines()
+
+    val fileLines=Source.fromFile(filepath).getLines()
     if(fileLines.isEmpty){
       return "file is empty, cannot save"
     }
-    fileCounter=fileCounter+1
-    val writer = new PrintWriter(new File(pathName+fileCounter+fileExtension))
+    FileManager.fileCounter=FileManager.addcounter()
+    println(FileManager.fileCounter)
+    val writer = new PrintWriter(new File(pathName+FileManager.fileCounter+fileExtension))
     fileLines.foreach { x =>writer.write(x+"\n") }
     writer.close()
     return "file saved"
   }
-  def compareFiles(): (String, Array[Int])={
-    val results=Array(0,0,0)
+  def compareFiles(): (String,Array[String], Array[Int])={
+    val results=Array(-1,-1,-1)
     var msg="good"
-    if(fileCounter==0){
+    val stats=Array("difflines", "diffwords","diffchars")
+    if(FileManager.fileCounter==0){
       msg="there is no files"
-      return (msg,results)
+      return (msg,stats,results)
     }
-    if(fileCounter==1){
+    if(FileManager.fileCounter==1){
         msg="there is only 1 file to compare"
-        return (msg,results)
+        return (msg,stats,results)
     }
-    val previous=pathName+(fileCounter-1)+fileExtension
-    val current= pathName+fileCounter+fileExtension
+    //val filepaths=filesNames.toArray
+
+    val previous=pathName+(FileManager.fileCounter-1)+fileExtension
+    val current= pathName+FileManager.fileCounter+fileExtension
 
     val difflines=this.countLines(current)-this.countLines(previous)
+    println(difflines)
     val diffwords=this.countWords(current)-this.countWords(previous)
+    println(diffwords)
     val diffchars=this.countChars(current)-this.countChars(previous)
+    println(diffchars)
 
-    return (msg,Array(difflines,diffwords,diffchars))
+    return (msg, stats,Array(difflines,diffwords,diffchars))
 
   }
 
 
 
+}
+object FileManager{
+  var fileCounter :Int = 0
+  def addcounter()=fileCounter+1
 }

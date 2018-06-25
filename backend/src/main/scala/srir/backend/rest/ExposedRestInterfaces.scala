@@ -55,13 +55,15 @@ class ExposedRestInterfaces (filePath: String) extends MainServerREST{
       }
     }
 
-    override def getStatsForFile(@Body fileName: String): Future[Array[Int]] = {
+    override def getStatsForFile(@Body fileName: String): Future[(String, Array[String],Array[Int])] = {
       val manager=new FileManager
       //val counter=manager.countLines(filePath + "/" + fileName)
-      manager.saveFile(filePath + "/" + fileName)
+      manager.saveFile(filePath+"/"+fileName,fileName)
+      val result=manager.compareFiles()
+      //println(result.toString)
+      //val array=Array(result._1, result._2(0).toString,result._2(1).toString,result._2(2).toString)
 
-
-      Future.successful(Array(0,0,0))
+      Future.successful(result)
     }
   }
 
