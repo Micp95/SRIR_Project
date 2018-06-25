@@ -9,6 +9,6 @@ import scala.concurrent.Future
 trait CompilerServerREST {
   @POST def compileFile(@Body fileName: String):Future[String]
   @POST def executeFile(@Body fileName: String):Future[String]
-  @POST def getStatsForFile(@Body fileName: String):Future[Array[Int]]
+  @POST def getStatsForFile(@Body fileName: String):Future[(String, Array[String],Array[Int])]
 
 }
