@@ -36,13 +36,13 @@ class CompilePresenter(model: ModelProperty[CompileModel])(implicit ec: Executio
 
         case Success(resp) =>{
           model.subProp(_.fileName).set(resp)
-          model.subProp(_.compilerMessage).set("OK")
+          model.subProp(_.compilerMessage).set("OK - file saved as: " + resp)
           executeFile()
         }
 
         case Failure(ex) =>{
 
-          model.subProp(_.compilerMessage).set(ex.getMessage.intern())
+          model.subProp(_.compilerMessage).set("ERROR - " + ex.getMessage.intern())
           model.subProp(_.executionMessage).set("Aborted")
           model.subProp(_.comparisonMessage).set("Aborted")
 
@@ -62,14 +62,14 @@ class CompilePresenter(model: ModelProperty[CompileModel])(implicit ec: Executio
 
       case Success(resp) =>{
 
-        model.subProp(_.executionMessage).set("OK")
+        model.subProp(_.executionMessage).set("OK - result: " + resp)
         getStats()
 
       }
 
       case Failure(ex) =>{
 
-        model.subProp(_.executionMessage).set(ex.getMessage)
+        model.subProp(_.executionMessage).set("ERROR - " + ex.getMessage)
         model.subProp(_.comparisonMessage).set("Aborted")
 
       }
@@ -78,19 +78,22 @@ class CompilePresenter(model: ModelProperty[CompileModel])(implicit ec: Executio
   }
 
   private def getStats():Unit ={
+
+    model.subProp(_.comparisonMessage).set("In progress...")
+
     val name = model.subProp(_.fileName).get
 
     ApplicationContext.restServer.compileMethod().getStatsForFile(name) onComplete{
 
       case Success(resp) =>{
 
-        model.subProp(_.comparisonMessage).set("OK")
+        model.subProp(_.comparisonMessage).set("OK - result: " + resp)
 
       }
 
       case Failure(ex) =>{
 
-        model.subProp(_.comparisonMessage).set(ex.getMessage)
+        model.subProp(_.comparisonMessage).set("ERROR - " + ex.getMessage)
 
       }
 
