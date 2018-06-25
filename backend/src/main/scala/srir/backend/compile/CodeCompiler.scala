@@ -32,6 +32,7 @@ class CodeCompiler{
       val result = compiledFile.getFileReference
 
       Right(result)
+
     }catch {
       case ex: Exception => Left(CastFailed)
     }

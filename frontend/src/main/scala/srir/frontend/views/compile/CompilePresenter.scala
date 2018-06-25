@@ -1,8 +1,5 @@
 package srir.frontend.views.compile
 
-
-//import java.util.UUID
-
 import io.udash._
 import io.udash.auth.AuthRequires
 import io.udash.core.Presenter
@@ -12,20 +9,20 @@ import org.scalajs.dom._
 import srir.frontend.ApplicationContext
 import srir.frontend.routing.CompileState
 import srir.shared.ApplicationServerContexts
+//import srir.shared.rest.CompileStatus
 
 import scala.concurrent.ExecutionContext
 import scala.util._
 
-class CompilePresenter(
-                     model: ModelProperty[CompileModel]
-                   )(
-                    implicit ec: ExecutionContext
-                   ) extends Presenter[CompileState.type] with AuthRequires {
+class CompilePresenter(model: ModelProperty[CompileModel])(implicit ec: ExecutionContext) extends Presenter[CompileState.type] with AuthRequires {
 
   private val uploader = new FileUploader(Url(ApplicationServerContexts.uploadContextPrefix))
 
-
   def processFile():Unit={
+
+    model.subProp(_.compilerMessage).set("In progress...")
+    model.subProp(_.executionMessage).set("Waiting")
+    model.subProp(_.comparisonMessage).set("Waiting")
     uploader.upload("files", model.subSeq(_.selectedFile).get)
 
     val reader = new FileReader()
@@ -39,11 +36,15 @@ class CompilePresenter(
 
         case Success(resp) =>{
           model.subProp(_.fileName).set(resp)
+          model.subProp(_.compilerMessage).set("OK")
           executeFile()
         }
 
         case Failure(ex) =>{
 
+          model.subProp(_.compilerMessage).set(ex.getMessage.intern())
+          model.subProp(_.executionMessage).set("Aborted")
+          model.subProp(_.comparisonMessage).set("Aborted")
 
         }
 
@@ -53,17 +54,23 @@ class CompilePresenter(
 
 
   private def executeFile():Unit ={
+
+    model.subProp(_.executionMessage).set("In progress...")
     val name = model.subProp(_.fileName).get
 
     ApplicationContext.restServer.compileMethod().executeFile(name) onComplete{
 
       case Success(resp) =>{
+
+        model.subProp(_.executionMessage).set("OK")
         getStats()
 
       }
 
       case Failure(ex) =>{
 
+        model.subProp(_.executionMessage).set(ex.getMessage)
+        model.subProp(_.comparisonMessage).set("Aborted")
 
       }
 
@@ -77,9 +84,13 @@ class CompilePresenter(
 
       case Success(resp) =>{
 
+        model.subProp(_.comparisonMessage).set("OK")
+
       }
 
       case Failure(ex) =>{
+
+        model.subProp(_.comparisonMessage).set(ex.getMessage)
 
       }
 
