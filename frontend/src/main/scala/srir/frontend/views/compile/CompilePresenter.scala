@@ -87,7 +87,9 @@ class CompilePresenter(model: ModelProperty[CompileModel])(implicit ec: Executio
 
       case Success(resp) =>{
 
-        model.subProp(_.comparisonMessage).set("OK - result: " + resp)
+        val stats=resp._2.mkString(", ")
+        val statsdata=resp._3.mkString(", ")
+        model.subProp(_.comparisonMessage).set("OK - result: " + resp._1+", ["+stats+"], ["+statsdata+"]")
 
       }
 
