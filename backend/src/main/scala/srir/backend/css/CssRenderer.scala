@@ -2,7 +2,7 @@ package srir.backend.css
 
 import io.udash.css._
 import scalacss.internal.{Renderer, StringRenderer}
-import srir.shared.css.{GlobalStyles}
+import srir.shared.css.{CompileStyles}
 
 /** Renderer of styles based on UdashCSS. */
 class CssRenderer(path: String, renderPretty: Boolean) {
@@ -14,7 +14,7 @@ class CssRenderer(path: String, renderPretty: Boolean) {
     new CssFileRenderer(path,
       Seq(
         // the list of styles to be rendered
-        GlobalStyles
+        CompileStyles
       ), createMain = true
     ).render()(renderer)
   }

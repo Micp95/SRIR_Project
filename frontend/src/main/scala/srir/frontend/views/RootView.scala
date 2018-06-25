@@ -1,10 +1,12 @@
 package srir.frontend.views
 
+import io.udash.bootstrap.utils.UdashJumbotron
 import io.udash.{StaticViewFactory, _}
 import io.udash.bootstrap.{BootstrapStyles, UdashBootstrap}
 import io.udash.css.CssView
 import srir.frontend.routing.RootState
-import srir.shared.css.GlobalStyles
+//import srir.shared.css.CompileStyles
+import scalatags.JsDom.tags2.main
 
 class RootViewFactory() extends StaticViewFactory[RootState.type](
   () => new RootView()
@@ -13,19 +15,22 @@ class RootViewFactory() extends StaticViewFactory[RootState.type](
 class RootView() extends ContainerView with CssView {
   import scalatags.JsDom.all._
 
-
   // ContainerView contains default implementation of child view rendering
   // It puts child view into `childViewContainer`
-  override def getTemplate: Modifier = div(
-    // loads Bootstrap and FontAwesome styles from CDN
+  private val content = div(
     UdashBootstrap.loadBootstrapStyles(),
     UdashBootstrap.loadFontAwesome(),
 
-    BootstrapStyles.container,
-    div(
-      GlobalStyles.floatRight
-    ),
-    h1("CompileProject"),
-    childViewContainer
-  )
+    main(BootstrapStyles.container)(
+      div(
+        UdashJumbotron(
+          h1("Compile Project"),
+          p("Welcome in the Compile project!")
+        ).render,
+        childViewContainer
+      )
+    )
+  ).render
+
+  override def getTemplate: Modifier = content
 }

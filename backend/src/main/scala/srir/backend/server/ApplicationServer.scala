@@ -21,9 +21,14 @@ class ApplicationServer(val port: Int, resourceBase: String) {
   contextHandler.addServlet(appHolder, "/*")
   server.setHandler(contextHandler)
 
+  def start(): Unit = server.start()
+  def stop(): Unit = server.stop()
 
   private val restHolder = new ServletHolder(
-    new DefaultRestServlet(new DefaultExposesREST[MainServerREST](new ExposedRestInterfaces(resourceBase + "/uploads"))))
+
+   new DefaultRestServlet(new DefaultExposesREST[MainServerREST](new ExposedRestInterfaces(resourceBase + "/uploads")))
+
+  )
   restHolder.setAsyncSupported(true)
 
   contextHandler.addServlet(restHolder, "/api/*")
@@ -35,12 +40,6 @@ class ApplicationServer(val port: Int, resourceBase: String) {
   }
 
   contextHandler.addServlet(uploadsHolder, ApplicationServerContexts.uploadContextPrefix + "/*")
-
-
-  def start(): Unit = server.start()
-  def stop(): Unit = server.stop()
-
-
 
   private def createAppHolder() = {
     val appHolder = new ServletHolder(new DefaultServlet)
