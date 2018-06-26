@@ -20,6 +20,7 @@ class CompileView(model: ModelProperty[CompileModel], presenter: CompilePresente
   private val msgForm = div(
     UdashForm(
       _ => {
+        presenter.upload()
         presenter.processFile()
         true
       }
