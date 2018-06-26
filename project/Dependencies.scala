@@ -32,6 +32,8 @@ object Dependencies {
     "io.udash" %%% "udash-i18n-shared" % udashVersion,
     "io.udash" %%% "udash-css-shared" % udashVersion,
     "io.udash" %%% "udash-auth-shared" % udashVersion,
+
+    //"org.json4s" %%% "json4s-native" % "3.6.0-M4"
   ))
 
   // Dependencies compiled to JavaScript code
@@ -48,6 +50,8 @@ object Dependencies {
     "io.udash" %%% "udash-charts" % udashVersion,
     // type-safe wrapper for jQuery
     "io.udash" %%% "udash-jquery" % udashJQueryVersion,
+
+    "com.github.benhutchison" %%% "prickle" % "1.1.13"
   ))
 
   // JavaScript libraries dependencies
@@ -95,6 +99,9 @@ object Dependencies {
     "ch.qos.logback" % "logback-classic" % logbackVersion,
 
     "org.scala-lang" % "scala-compiler" % "2.11.8",
+
+    "org.json4s" %% "json4s-native" % "3.6.0-M4"
+
   ))
 
   // Test dependencies

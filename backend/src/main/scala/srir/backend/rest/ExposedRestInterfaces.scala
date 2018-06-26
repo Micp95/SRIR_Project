@@ -4,11 +4,14 @@ import java.io.File
 import java.util.UUID
 
 import io.udash.rest.Body
+import org.json4s.DefaultFormats
+import srir.shared.rest.ExecutionResponse
+//import net.liftweb.json.DefaultFormats
 import srir.backend.compile.CodeCompiler
 import srir.backend.services.FilesStorage
 import srir.backend.stats.FileManager
 import srir.shared.UploadedFile
-import srir.shared.rest.{CompilerServerREST, MainServerREST}
+import srir.shared.rest.{CompileResponse, CompilerServerREST, MainServerREST}
 
 import scala.concurrent.Future
 import scala.util.Try
@@ -17,6 +20,9 @@ class ExposedRestInterfaces (filePath: String) extends MainServerREST{
 
   override def compileMethod(): CompilerServerREST = new CompilerServerREST{
 
+//    import net.liftweb.json.Serialization.write
+    implicit val formats = DefaultFormats
+    import org.json4s.native.Serialization.write
 
     private def mv(oldName: String, newName: String) =
       Try(new File(oldName).renameTo(new File(newName))).getOrElse(false)
@@ -25,8 +31,9 @@ class ExposedRestInterfaces (filePath: String) extends MainServerREST{
 
       val newFileName: String = s"${UUID.randomUUID()}_${fileName.replaceAll("[^a-zA-Z0-9.-]", "_")}"
 
-      if(!mv(filePath + "/" + fileName,filePath + "/" + newFileName))
-        Future.failed(new Exception("Rename File failed"))
+      if(!mv(filePath + "/" + fileName,filePath + "/" + newFileName)){
+        Future.successful(write(CompileResponse(null,"Rename File failed")))
+      }
 
       val compiler = new CodeCompiler
       val result = compiler.processFile(filePath + "/" + newFileName)
@@ -35,9 +42,9 @@ class ExposedRestInterfaces (filePath: String) extends MainServerREST{
         FilesStorage.add(
           UploadedFile(newFileName, result.right.get)
         )
-        Future.successful(newFileName)
+        Future.successful(write(CompileResponse(newFileName,null)))
       }else{
-        Future.failed(new Exception("Compile failed:"+result.left.get.toString))
+        Future.successful(write(CompileResponse(null,s"Compile failed: ${result.left.get.toString}")))
       }
     }
 
@@ -47,11 +54,11 @@ class ExposedRestInterfaces (filePath: String) extends MainServerREST{
       try {
 
         val result = file.compiledApplication.run()
-        Future.successful(result.toString)
+        Future.successful(write(ExecutionResponse(result,null)))
 
       }catch {
         case ex: Exception =>
-          Future.failed(new Exception("Execution failed: "+ex.getMessage))
+          Future.successful(write(ExecutionResponse(0,s"Execution failed: ${ex.getMessage}")))
       }
     }
 
