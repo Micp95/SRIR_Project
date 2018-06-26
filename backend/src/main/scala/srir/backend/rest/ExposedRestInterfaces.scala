@@ -1,6 +1,7 @@
 package srir.backend.rest
 
 import java.io.File
+import java.nio.file.{Files, Paths}
 import java.util.UUID
 
 import io.udash.rest.Body
@@ -18,20 +19,22 @@ import scala.util.Try
 
 class ExposedRestInterfaces (filePath: String) extends MainServerREST{
 
+  def mv(oldName: String, newName: String) =
+    Try(new File(oldName).renameTo(new File(newName))).getOrElse(false)
+
+
   override def compileMethod(): CompilerServerREST = new CompilerServerREST{
 
 //    import net.liftweb.json.Serialization.write
     implicit val formats = DefaultFormats
     import org.json4s.native.Serialization.write
 
-    private def mv(oldName: String, newName: String) =
-      Try(new File(oldName).renameTo(new File(newName))).getOrElse(false)
 
     override def compileFile(@Body fileName: String):Future[String] ={
 
       val newFileName: String = s"${UUID.randomUUID()}_${fileName.replaceAll("[^a-zA-Z0-9.-]", "_")}"
 
-      if(!mv(filePath + "/" + fileName,filePath + "/" + newFileName)){
+      if(!Files.exists(Paths.get(s"$filePath/$fileName")) ||  !mv( s"$filePath/$fileName" ,  s"$filePath/$newFileName" )){
         Future.successful(write(CompileResponse(null,"Rename File failed")))
       }
 
