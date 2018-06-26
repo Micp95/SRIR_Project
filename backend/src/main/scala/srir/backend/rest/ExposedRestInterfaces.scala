@@ -47,12 +47,17 @@ class ExposedRestInterfaces (filePath: String) extends MainServerREST{
         )
         Future.successful(write(CompileResponse(newFileName,null)))
       }else{
+        new File(s"$filePath/$fileName").delete()
         Future.successful(write(CompileResponse(null,s"Compile failed: ${result.left.get.toString}")))
       }
     }
 
     override def executeFile(@Body fileName: String):Future[String]={
       val file = FilesStorage.getFile(fileName)
+
+      if(file == null){
+        Future.successful(write(ExecutionResponse(0,"File doesn't exist")))
+      }
 
       try {
 

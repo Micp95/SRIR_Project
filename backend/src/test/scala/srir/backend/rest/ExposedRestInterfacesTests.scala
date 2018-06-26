@@ -7,14 +7,17 @@ import java.nio.file.{Files, Paths}
 import org.json4s._
 import org.json4s.native.JsonMethods._
 import org.scalatest.{FlatSpec, Matchers}
-import srir.shared.rest.CompileResponse
+import srir.backend.services.FilesStorage
+import srir.shared.UploadedFile
+import srir.shared.model.compile.ExternalProcess
+import srir.shared.rest.{CompileResponse, ExecutionResponse}
 
 class ExposedRestInterfacesTests extends FlatSpec with Matchers {
 
   implicit val formats = DefaultFormats
 
   val path = "xdUnitTest"
-  val fileName = "unitTestFile.scala"
+  val fileName = "unitTestFile.tst"
   val correctFile =
     """
       |new ExternalProcess {
@@ -30,6 +33,7 @@ class ExposedRestInterfacesTests extends FlatSpec with Matchers {
       |		def add(a:Int,b:Int) = a + b
       |}
     """.stripMargin
+
 
 
   new File(path).mkdir()
@@ -53,7 +57,9 @@ class ExposedRestInterfacesTests extends FlatSpec with Matchers {
   }
 
 
-  "ExposedRestInterfaces" should "not be able to process when file doesn't exist" in {
+  //COMPILE TESTS
+
+  "ExposedRestInterfaces - compile" should "not be able to process when file doesn't exist" in {
 
     if(Files.exists(Paths.get(s"$path/$fileName")))
       new File(s"$path/$fileName").delete()
@@ -107,5 +113,69 @@ class ExposedRestInterfacesTests extends FlatSpec with Matchers {
     new File(s"$path/$fileName").delete()
     new File(s"$path/${parsedObject.fileName}").delete()
   }
+
+  //EXECUTION TESTS
+
+  "ExposedRestInterfaces - execution" should "not be able to execute when compiled file doesn't exist" in {
+
+
+    val api = new ExposedRestInterfaces(path)
+    val result = api.compileMethod().executeFile("xdddd")
+
+    val resultBody = result.value.head.get
+
+    val parsedObject = parse(resultBody).extract[ExecutionResponse]
+
+    parsedObject.errorMessage.contains("null")
+  }
+
+
+  it should "be able to execute when application is correct" in {
+
+    val compiledFile = new  ExternalProcess {
+      override def run() = add(10,20)
+      def add(a:Int,b:Int) = a + b
+    }
+
+    FilesStorage.add(
+      UploadedFile(fileName, compiledFile)
+    )
+
+    val api = new ExposedRestInterfaces(path)
+    val result = api.compileMethod().executeFile(fileName)
+
+    val resultBody = result.value.head.get
+    val parsedObject = parse(resultBody).extract[ExecutionResponse]
+
+
+
+    parsedObject.errorMessage.shouldBe(null)
+    parsedObject.result.shouldBe(30)
+
+  }
+
+  it should "not be able to execute when application is incorrect" in {
+
+    val compiledFile = new  ExternalProcess {
+      override def run() = add(10,20)
+      def add(a:Int,b:Int) = (a + b)/0
+    }
+
+    FilesStorage.add(
+      UploadedFile(fileName, compiledFile)
+    )
+
+    val api = new ExposedRestInterfaces(path)
+    val result = api.compileMethod().executeFile(fileName)
+
+    val resultBody = result.value.head.get
+    val parsedObject = parse(resultBody).extract[ExecutionResponse]
+
+
+    parsedObject.errorMessage.contains("Execution failed")
+
+  }
+
+
 
 }

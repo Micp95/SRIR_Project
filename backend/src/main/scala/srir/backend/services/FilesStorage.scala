@@ -13,7 +13,10 @@ object FilesStorage {
   def allFiles: List[UploadedFile] =
     files.valuesIterator.toList
 
-  def getFile (fileName:String): UploadedFile=
-    files(fileName)
+  def getFile (fileName:String): UploadedFile={
+    if(files.contains(fileName))
+      return files(fileName)
+    null
+  }
 
 }
