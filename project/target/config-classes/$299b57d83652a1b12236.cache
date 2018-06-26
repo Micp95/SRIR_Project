@@ -1,0 +1,11 @@
+compileAndOptimizeStatics
+compileStatics
+compileCss
+cssDir
+copyAssets
+packager
+backend
+frontend
+sharedJS
+sharedJVM
+root

@@ -1,0 +1,23 @@
+[debug] Full compilation, no sources in previous analysis.
+[debug] All sources are invalidated.
+[debug] Recompiling all 9 sources: invalidated sources (9) exceeded 50.0% of all sources
+[info] Compiling 9 Scala sources to /home/damian/Id/SRIR_Project/shared/.jvm/target/scala-2.12/classes ...
+[debug] Getting org.scala-sbt:compiler-bridge_2.12:1.1.0:compile for Scala 2.12.4
+[debug] Getting org.scala-sbt:compiler-bridge_2.12:1.1.0:compile for Scala 2.12.4
+[debug] [zinc] Running cached compiler 624a4d41 for Scala compiler version 2.12.4
+[debug] [zinc] The Scala compiler is invoked with:
+[debug] 	-feature
+[debug] 	-deprecation
+[debug] 	-unchecked
+[debug] 	-language:implicitConversions
+[debug] 	-language:existentials
+[debug] 	-language:dynamics
+[debug] 	-Xfuture
+[debug] 	-Xfatal-warnings
+[debug] 	-Xlint:_,-missing-interpolator,-adapted-args
+[debug] 	-bootclasspath
+[debug] 	/usr/lib/jvm/java-8-openjdk-amd64/jre/lib/resources.jar:/usr/lib/jvm/java-8-openjdk-amd64/jre/lib/rt.jar:/usr/lib/jvm/java-8-openjdk-amd64/jre/lib/sunrsasign.jar:/usr/lib/jvm/java-8-openjdk-amd64/jre/lib/jsse.jar:/usr/lib/jvm/java-8-openjdk-amd64/jre/lib/jce.jar:/usr/lib/jvm/java-8-openjdk-amd64/jre/lib/charsets.jar:/usr/lib/jvm/java-8-openjdk-amd64/jre/lib/jfr.jar:/usr/lib/jvm/java-8-openjdk-amd64/jre/classes:/home/damian/.sbt/boot/scala-2.12.4/lib/scala-library.jar
+[debug] 	-classpath
+[debug] 	/home/damian/Id/SRIR_Project/shared/.jvm/target/scala-2.12/classes:/home/damian/.ivy2/cache/io.udash/udash-core-shared_2.12/jars/udash-core-shared_2.12-0.6.1.jar:/home/damian/.ivy2/cache/io.udash/udash-core-macros_2.12/jars/udash-core-macros_2.12-0.6.1.jar:/home/damian/.ivy2/cache/com.github.ghik/silencer-lib_2.12/jars/silencer-lib_2.12-0.6.jar:/home/damian/.ivy2/cache/com.avsystem.commons/commons-core_2.12/jars/commons-core_2.12-1.25.5.jar:/home/damian/.ivy2/cache/com.avsystem.commons/commons-macros_2.12/jars/commons-macros_2.12-1.25.5.jar:/home/damian/.ivy2/cache/com.avsystem.commons/commons-annotations_2.12/jars/commons-annotations_2.12-1.25.5.jar:/home/damian/.sbt/boot/scala-2.12.4/lib/scala-reflect.jar:/home/damian/.ivy2/cache/com.lihaoyi/scalatags_2.12/jars/scalatags_2.12-0.6.7.jar:/home/damian/.ivy2/cache/com.lihaoyi/sourcecode_2.12/bundles/sourcecode_2.12-0.1.4.jar:/home/damian/.ivy2/cache/com.typesafe.scala-logging/scala-logging_2.12/bundles/scala-logging_2.12-3.7.2.jar:/home/damian/.ivy2/cache/org.slf4j/slf4j-api/jars/slf4j-api-1.7.25.jar:/home/damian/.ivy2/cache/io.udash/udash-rpc-shared_2.12/jars/udash-rpc-shared_2.12-0.6.1.jar:/home/damian/.ivy2/cache/org.spire-math/jawn-parser_2.12/jars/jawn-parser_2.12-0.10.4.jar:/home/damian/.ivy2/cache/io.udash/udash-rest-shared_2.12/jars/udash-rest-shared_2.12-0.6.1.jar:/home/damian/.ivy2/cache/io.udash/udash-rest-macros_2.12/jars/udash-rest-macros_2.12-0.6.1.jar:/home/damian/.ivy2/cache/fr.hmil/roshttp_2.12/jars/roshttp_2.12-2.1.0.jar:/home/damian/.ivy2/cache/io.monix/monix-types_2.12/jars/monix-types_2.12-2.3.0.jar:/home/damian/.ivy2/cache/io.monix/monix-execution_2.12/jars/monix-execution_2.12-2.3.0.jar:/home/damian/.ivy2/cache/org.reactivestreams/reactive-streams/jars/reactive-streams-1.0.0.jar:/home/damian/.ivy2/cache/io.monix/monix-eval_2.12/jars/monix-eval_2.12-2.3.0.jar:/home/damian/.ivy2/cache/io.monix/monix-reactive_2.12/jars/monix-reactive_2.12-2.3.0.jar:/home/damian/.ivy2/cache/org.jctools/jctools-core/bundles/jctools-core-2.0.1.jar:/home/damian/.ivy2/cache/io.udash/udash-i18n-shared_2.12/jars/udash-i18n-shared_2.12-0.6.1.jar:/home/damian/.ivy2/cache/io.udash/udash-css-shared_2.12/jars/udash-css-shared_2.12-0.6.1.jar:/home/damian/.ivy2/cache/io.udash/udash-css-macros_2.12/jars/udash-css-macros_2.12-0.6.1.jar:/home/damian/.ivy2/cache/com.github.japgolly.scalacss/core_2.12/jars/core_2.12-0.5.5.jar:/home/damian/.ivy2/cache/com.github.japgolly.univeq/univeq_2.12/jars/univeq_2.12-1.0.2.jar:/home/damian/.ivy2/cache/io.udash/udash-auth-shared_2.12/jars/udash-auth-shared_2.12-0.6.1.jar
+[debug] Scala compilation took 6.428130384 s
+[info] Done compiling.
